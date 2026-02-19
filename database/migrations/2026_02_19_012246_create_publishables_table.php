@@ -13,7 +13,6 @@ return new class extends Migration {
             $table->foreignId('org_id')->constrained()->cascadeOnDelete();
             $table->foreignId('publisher_id')->constrained('publishers')->cascadeOnDelete();
             $table->morphs('publishable'); // morphs: publishable_type (string) + publishable_id (unsignedBigInteger) + index
-            $table->timestamps();
 
             $table->unique([
                 'orga_id',

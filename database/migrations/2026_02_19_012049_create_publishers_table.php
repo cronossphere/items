@@ -14,8 +14,6 @@ return new class extends Migration {
             $table->string('country', 2)->nullable();
             $table->text('notes')->nullable();
 
-            $table->timestamps();
-
             $table->foreignId('org_id')->constrained()->cascadeOnDelete();
             $table->foreignId('created_by')->constrained('users')->nullOnDelete();
 
