@@ -14,25 +14,15 @@ return new class extends Migration {
             $table->foreignId('publisher_id')->constrained('publishers')->cascadeOnDelete();
             $table->morphs('publishable'); // morphs: publishable_type (string) + publishable_id (unsignedBigInteger) + index
 
-            $table->unique([
-                'organization_id',
-                'publisher_id',
-                'publishable_type',
-                'publishable_id',
-            ], 'publishables_org_pub_entity_unique');
-
-            $table->index([
-                'organization_id',
-                'publishable_type',
-                'publishable_id',
-            ], 'publishables_org_entity_index');
-
-            $table->index([
-                'organization_id',
-                'publisher_id',
-            ], 'publishables_org_publisher_index');
-
+            $table->softDeletes();
             $table->timestamps();
+
+            // verhindert doppelte aktive Zuweisungen (bei SoftDelete inkl deleted_at)
+            $table->unique(['organization_id', 'publisher_id', 'publishable_type', 'publishable_id', 'deleted_at'],
+            'publishables_org_pub_entity_deleted_unique'
+            );
+            $table->index(['organization_id', 'publisher_id'], 'publishables_org_publisher_index');
+            $table->index(['organization_id', 'publishable_type', 'publishable_id'], 'publishables_org_entity_index');
         });
     }
 };

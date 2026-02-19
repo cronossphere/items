@@ -19,8 +19,10 @@ return new class extends Migration {
 
             // Häufige Suche + Duplikatvermeidung pro Mandant
             $table->index(['organization_id', 'name']);
-            $table->unique(['organization_id', 'name']);
+            // Name pro Mandant eindeutig (bei SoftDelete inkl deleted_at)
+            $table->unique(['organization_id', 'name', 'deleted_at'], 'publishers_org_name_deleted_unique');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }
