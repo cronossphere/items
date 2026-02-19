@@ -14,12 +14,12 @@ return new class extends Migration {
             $table->string('country', 2)->nullable();
             $table->text('notes')->nullable();
 
-            $table->foreignId('org_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('organization_id')->constrained()->cascadeOnDelete();
             $table->foreignId('created_by')->constrained('users')->nullOnDelete();
 
             // Häufige Suche + Duplikatvermeidung pro Mandant
-            $table->index(['org_id', 'name']);
-            $table->unique(['org_id', 'name']);
+            $table->index(['organization_id', 'name']);
+            $table->unique(['organization_id', 'name']);
 
             $table->timestamps();
         });

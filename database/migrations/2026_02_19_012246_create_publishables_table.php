@@ -10,25 +10,25 @@ return new class extends Migration {
         Schema::create('publishables', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('org_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('organization_id')->constrained()->cascadeOnDelete();
             $table->foreignId('publisher_id')->constrained('publishers')->cascadeOnDelete();
             $table->morphs('publishable'); // morphs: publishable_type (string) + publishable_id (unsignedBigInteger) + index
 
             $table->unique([
-                'orga_id',
+                'organization_id',
                 'publisher_id',
                 'publishable_type',
                 'publishable_id',
             ], 'publishables_org_pub_entity_unique');
 
             $table->index([
-                'org_id',
+                'organization_id',
                 'publishable_type',
                 'publishable_id',
             ], 'publishables_org_entity_index');
 
             $table->index([
-                'org_id',
+                'organization_id',
                 'publisher_id',
             ], 'publishables_org_publisher_index');
 

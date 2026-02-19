@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('url')->nullable();
             $table->text('notes')->nullable();
 
-            $table->foreignId('org_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('organization_id')->constrained()->cascadeOnDelete();
             $table->foreignId('created_by')->constrained('users')->nullOnDelete();
 
             $table->softDeletes();

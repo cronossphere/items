@@ -12,10 +12,10 @@ return new class extends Migration {
             $table->string('name');
 
             $table->foreignId('item_type_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('org_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('organization_id')->constrained()->cascadeOnDelete();
             $table->foreignId('created_by')->constrained('users')->nullOnDelete();
 
-            $table->index(['org_id']);
+            $table->index(['organization_id']);
             $table->softDeletes();
             $table->timestamps();
         });

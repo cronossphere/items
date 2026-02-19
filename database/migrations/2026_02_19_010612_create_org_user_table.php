@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('org_user', function (Blueprint $table) {
+        Schema::create('organization_user', function (Blueprint $table) {
 
-            $table->foreignId('org_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('organization_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('role')->nullable();
 
-            $table->primary(['org_id', 'user_id']);
+            $table->primary(['organization_id', 'user_id']);
             $table->timestamps();
         });
     }

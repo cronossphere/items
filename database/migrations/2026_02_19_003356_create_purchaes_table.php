@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('receipt')->nullable();
 
             $table->foreignId('shop_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('org_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('organization_id')->constrained()->cascadeOnDelete();
             $table->foreignId('created_by')->constrained('users')->nullOnDelete();
 
             $table->softDeletesDatetime();
