@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\Tags\HasTags;
 
 class Item extends Model implements TracksCreator, BelongsToOrganizationContract
 {
     use SoftDeletes;
     use BelongsToOrganization;
     use HasCreator;
+    use HasTags;
 
     protected $fillable = [
         'organization_id',
@@ -43,5 +45,16 @@ class Item extends Model implements TracksCreator, BelongsToOrganizationContract
     public function type(): HasOne
     {
         return $this->hasOne(ItemType::class, 'id', 'type_id');
+    }
+
+    public static function getTagClassName(): string
+    {
+        return \App\Models\Tag::class;
+    }
+
+    public function tagType(): string
+    {
+        // ItemType scoping (book/movie/...)
+        return 'item:' . $this->type;
     }
 }
