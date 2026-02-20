@@ -18,7 +18,9 @@ class Organization extends Model implements TracksCreator
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->withPivot(['role']);
+        return $this->belongsToMany(User::class)
+            ->withTimestamps()
+            ->withPivot(['role']);
     }
 
     public function items(): HasMany

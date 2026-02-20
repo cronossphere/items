@@ -10,12 +10,36 @@ use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Filament\Models\Contracts\HasDefaultTenant;
 
 
-class User extends Authenticatable implements HasTenants
+class User extends Authenticatable implements HasTenants, HasDefaultTenant
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    public function getDefaultTenant(Panel $panel): ?Model
+    {
+        // 1) zuletzt verwendete Org, falls noch berechtigt
+        if ($this->latestOrganization && $this->canAccessTenant($this->latestOrganization)) {
+            return $this->latestOrganization;
+        }
+
+        // 2) fallback: erste Organization
+        return $this->organizations()->first();
+    }
+
+    public function latestOrganization()
+    {
+        return $this->belongsTo(Organization::class, 'latest_organization_id');
+    }
+
+    public function roleInOrganization(Organization $org): ?string
+    {
+        return $this->organizations()
+            ->whereKey($org)
+            ->first()?->pivot?->role;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -53,7 +77,9 @@ class User extends Authenticatable implements HasTenants
 
     public function organizations()
     {
-        return $this->belongsToMany(Organization::class)->withPivot(['role']);
+        return $this->belongsToMany(Organization::class)
+            ->withTimestamps()
+            ->withPivot(['role']);
     }
 
     public function getTenants(Panel $panel): array|\Illuminate\Support\Collection
